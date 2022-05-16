@@ -8,7 +8,7 @@ jobs:
           password: $ARTIFACTORY_PASSWORD
     steps:
       - checkout
-      - run: mkdir ~/.kube/ && echo $KUBECRED_CIRCLECI_NP | openssl base64 -d -A > ~/.kube/config
+      - run: mkdir ~/.kube/ && echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config
       - run:
           name: Install or Upgrade Staging K8S
           command: |
