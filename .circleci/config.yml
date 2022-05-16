@@ -9,13 +9,13 @@ jobs:
     steps:
       - checkout
       - run: mkdir ~/.kube/ && echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config
-      - run:
-          name: Install or Upgrade Staging K8S
-          command: |
-            #need to update the local index of the remote chart repo
-            kubectl config get-contexts
-            kubectl config set-context circleci-runners
-            kubectl config get-contexts -n circleci-runners
+      #- run:
+      #    name: Install or Upgrade Staging K8S
+      #    command: |
+      #      #need to update the local index of the remote chart repo
+      #      kubectl config get-contexts
+      #      kubectl config set-context circleci-runners
+      #      kubectl config get-contexts -n circleci-runners
 
 workflows:
   version: 2
