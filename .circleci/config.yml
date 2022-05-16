@@ -1,76 +1,25 @@
-version: 2.1
-
-######################
-# Common Definitions #
-######################
-parameters:
-  main:
-    description: Run primary workflow that spins up minikube/k8s
-    type: boolean
-    default: true
-  runner-image:
-    type: string
-    default: 'launch-agent'
-
-executors:
-  runner:
-    machine: true
-    resource_class: circleci/k8s-test
-
-########################
-# Workflow Definitions #
-########################
-workflows:
-  main:
-    jobs:
-      - runner-job
-      - deploy-in-minikube
-
-###################
-# Job Definitions #
-###################
+version: 2
 jobs:
-  runner-job:
-    executor: runner
-    parallelism: 5
-    steps:
-      - run:
-          name: Verify environment
-          command: |
-            echo "Executing runner in a k8s cluster"
-            echo "Kubernetes Service Host: $KUBERNETES_SERVICE_HOST"
-            echo "Kubernetes Service Port: $KUBERNETES_SERVICE_PORT"
-            printenv
-
-  deploy-in-minikube:
-    machine:
-      image: ubuntu-2004:202104-01
+  helm:
+    docker:
+      - image: docker.mediamath.com/techops/cci/cci-utility-helm:3.6.1
+        auth:
+          username: $ARTIFACTORY_USER
+          password: $ARTIFACTORY_PASSWORD
     steps:
       - checkout
+      - run: mkdir ~/.kube/ && echo $KUBECRED_CIRCLECI_NP | openssl base64 -d -A > ~/.kube/config
       - run:
-          name: install minikube
+          name: Install or Upgrade Staging K8S
           command: |
-            DEBIAN_FRONTEND=noninteractive
-            sudo apt-get update -y
-            sudo apt-get install apt-transport-https
-            sudo apt install -y virtualbox jq
-            sudo snap install kubectl --classic
-            sudo snap install helm --classic
+            #need to update the local index of the remote chart repo
+            kubectl config get-contexts
+            kubectl config set-context circleci-runners
+            kubectl config get-contexts -n circleci-runners
 
-            curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
-            sudo dpkg -i minikube_latest_amd64.deb && minikube version
-            rm minikube_latest_amd64.deb
-      - run:
-          name: minikube start
-          command: |
-            time docker version
-            minikube version
-            minikube start --driver=docker
-      - run:
-          name: install helm chart
-          command: |
-            helm install runner . --set image.tag=<< pipeline.parameters.runner-image >> --set runnerToken=$K8S_RUNNER_TOKEN --set resourceClass=$K8S_RUNNER_RESOURCE
-      - run:
-          name: wait for runner job completion
-          command: |
-            timeout 5m ./scripts/wait_for_task_complete.sh
+workflows:
+  version: 2
+  cci-runners:
+    jobs:
+      - helm:
+          context: mediamath
