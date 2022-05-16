@@ -42,7 +42,7 @@ podAnnotations: {}
 podSecurityContext: {}
 
 securityContext: {
-  runAsUser: 1500
+  runAsUser: 1000
 }
 
 resources: {}
