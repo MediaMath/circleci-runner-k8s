@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Set KubeConfig
           command: |
-             mkdir ~/.kube/ && echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config
+             mkdir ~/.kube/ && echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config && chmod 600 ~/.kube/config
       - run:
           name: Helm Upgrade
           command: |
