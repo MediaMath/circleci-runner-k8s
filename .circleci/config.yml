@@ -1,25 +1,89 @@
 version: 2
+
+test_defaults: &test_defaults
+  docker:
+    - image: docker.mediamath.com/techops/cci/cci-utility-helm:3.6.1
+      auth:
+        username: $ARTIFACTORY_USER
+        password: $ARTIFACTORY_PASSWORD
+  steps:
+    - checkout
+    - run:
+        name: Set KubeConfig
+        command: |
+          mkdir ~/.kube/
+          if [ "$CIRCLE_BRANCH" == "main"]; then
+            echo $KUBECONFIG_PRD | openssl base64 -d -A > ~/.kube/config
+          else
+            echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config
+          fi
+            chmod 600 ~/.kube/config
+    - run:
+        name: Helm Install/Upgrade
+        command: |
+          helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$RUNNER_TOKEN --set resourceClass=$RUNNER_RESOURCECLASS --namespace circleci-runners --dry-run
+
+helm_defaults: &helm_defaults
+  docker:
+    - image: docker.mediamath.com/techops/cci/cci-utility-helm:3.6.1
+      auth:
+        username: $ARTIFACTORY_USER
+        password: $ARTIFACTORY_PASSWORD
+  steps:
+    - run:
+        name: Test
+        command: |
+          echo $PRUEBA
+
 jobs:
-  helm:
-    docker:
-      - image: docker.mediamath.com/techops/cci/cci-utility-helm:3.6.1
-        auth:
-          username: $ARTIFACTORY_USER
-          password: $ARTIFACTORY_PASSWORD
-    steps:
-      - checkout
-      - run:
-          name: Set KubeConfig
-          command: |
-             mkdir ~/.kube/ && echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config && chmod 600 ~/.kube/config
-      - run:
-          name: Helm Upgrade
-          command: |
-             helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken='TEST' --set resourceClass='mediamath/circleci-poc' --namespace circleci-runners --dry-run
+  helm-test:
+    environment:
+      PRUEBA: "prueba1"
+    <<: *helm_defaults
+  dev-deploy:
+    environment:
+      PRUEBA: "prueba2"
+    <<: *helm_defaults
+  prod-deploy:
+    environment:
+      PRUEBA: "prueba3"
+    <<: *helm_defaults
 
 workflows:
   version: 2
   cci-runners:
     jobs:
-      - helm:
+      - helm-test:
           context: mediamath
+      - dev-approval:
+          type: approval
+          requires:
+            - helm-test
+          filters:
+            branches:
+              ignore:
+                - main
+      - dev-deploy:
+          context: mediamath
+          requires:
+            - dev-approval
+          filters:
+            branches:
+              ignore:
+                - main
+      - prod-approval:
+          type: approval
+          requires:
+            - helm-test
+          filters:
+            branches:
+              only:
+                - main
+      - prod-deploy:
+          context: mediamath
+          requires:
+            - prod-approval
+          filters:
+            branches:
+              only:
+                - main
