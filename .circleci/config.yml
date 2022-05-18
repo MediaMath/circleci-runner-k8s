@@ -22,7 +22,7 @@ helm_defaults: &helm_defaults
 jobs:
   helm-test:
     environment:
-      KUBECONFIG: "${$KUBECONFIG_NP}"
+      KUBECONFIG: "${KUBECONFIG_NP}"
       DRYRUN: "--dry-run"
       RUNNER_TOKEN: "${CCI_RUNNER_TOKEN}"
       RUNNER_RESOURCECLASS: "${CCI_RUNNER_RESOURCECLASS}"
