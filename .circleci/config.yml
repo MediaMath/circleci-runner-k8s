@@ -11,32 +11,33 @@ helm_defaults: &helm_defaults
     - run:
         name: Set KubeConfig
         command: |
-          mkdir ~/.kube/ && \
-          echo $KUBECONFIG | openssl base64 -d -A > ~/.kube/config && \
+          mkdir ~/.kube/
+          if [ $KUBECONFIG == "prd" ]; then
+            echo $KUBECONFIG_PRD | openssl base64 -d -A > ~/.kube/config
+          else
+            echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config
+          fi
           chmod 600 ~/.kube/config
     - run:
         name: Helm Install/Upgrade
         command: |
-          helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$RUNNER_TOKEN --set resourceClass=$RUNNER_RESOURCECLASS --namespace circleci-runners $DRYRUN
+          helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$CCI_RUNNER_TOKEN --set resourceClass=$CCI_RUNNER_RESOURCECLASS --namespace circleci-runners $DRYRUN
 
 jobs:
   helm-test:
     environment:
-      KUBECONFIG: "${KUBECONFIG_NP}"
+      KUBECONFIG: "np"
       DRYRUN: "--dry-run"
-      RUNNER_TOKEN: "${CCI_RUNNER_TOKEN}"
-      RUNNER_RESOURCECLASS: "${CCI_RUNNER_RESOURCECLASS}"
     <<: *helm_defaults
   dev-deploy:
     environment:
-      KUBECONFIG: "${KUBECONFIG_NP}"
+      KUBECONFIG: "np"
       DRYRUN: ""
-      RUNNER_TOKEN: "${CCI_RUNNER_TOKEN}"
-      RUNNER_RESOURCECLASS: "${CCI_RUNNER_RESOURCECLASS}"
     <<: *helm_defaults
   prod-deploy:
     environment:
-      PRUEBA: "prueba3"
+      KUBECONFIG: "prd"
+      DRYRUN: ""
     <<: *helm_defaults
 
 workflows:
@@ -49,18 +50,10 @@ workflows:
           type: approval
           requires:
             - helm-test
-          filters:
-            branches:
-              ignore:
-                - main
       - dev-deploy:
           context: mediamath
           requires:
             - dev-approval
-          filters:
-            branches:
-              ignore:
-                - main
       - prod-approval:
           type: approval
           requires:
