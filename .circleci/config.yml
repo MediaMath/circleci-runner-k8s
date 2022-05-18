@@ -14,12 +14,12 @@ helm_defaults: &helm_defaults
           mkdir ~/.kube/
           if [ $KUBECREDS == "prd" ]; then
             echo $KUBECONFIG_PRD | openssl base64 -d -A > ~/.kube/config
-            export RUNNER_TOKEN=$CCI_RUNNER_TOKEN_PRD >> $BASH_ENV
-            export RUNNER_RESOURCE_CLASS=$CCI_RUNNER_RESOURCE_CLASS_PRD >> $BASH_ENV
+            echo "export RUNNER_TOKEN=$CCI_RUNNER_TOKEN_PRD" >> $BASH_ENV
+            echo "export RUNNER_RESOURCE_CLASS=$CCI_RUNNER_RESOURCE_CLASS_PRD" >> $BASH_ENV
           else
             echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config
-            export RUNNER_TOKEN=$CCI_RUNNER_TOKEN_NP >> $BASH_ENV
-            export RUNNER_RESOURCE_CLASS=$CCI_RUNNER_RESOURCE_CLASS_NP >> $BASH_ENV
+            echo "export RUNNER_TOKEN=$CCI_RUNNER_TOKEN_NP" >> $BASH_ENV
+            echo "export RUNNER_RESOURCE_CLASS=$CCI_RUNNER_RESOURCE_CLASS_NP" >> $BASH_ENV
           fi
           chmod 600 ~/.kube/config
     - run:
