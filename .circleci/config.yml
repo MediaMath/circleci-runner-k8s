@@ -1,6 +1,6 @@
 version: 2
 
-test_defaults: &test_defaults
+helm_defaults: &helm_defaults
   docker:
     - image: docker.mediamath.com/techops/cci/cci-utility-helm:3.6.1
       auth:
@@ -18,18 +18,6 @@ test_defaults: &test_defaults
         name: Helm Install/Upgrade
         command: |
           helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$RUNNER_TOKEN --set resourceClass=$RUNNER_RESOURCECLASS --namespace circleci-runners $DRYRUN
-
-helm_defaults: &helm_defaults
-  docker:
-    - image: docker.mediamath.com/techops/cci/cci-utility-helm:3.6.1
-      auth:
-        username: $ARTIFACTORY_USER
-        password: $ARTIFACTORY_PASSWORD
-  steps:
-    - run:
-        name: Test
-        command: |
-          echo $PRUEBA
 
 jobs:
   helm-test:
