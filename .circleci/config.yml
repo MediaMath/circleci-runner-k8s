@@ -14,17 +14,21 @@ helm_defaults: &helm_defaults
           mkdir ~/.kube/
           if [ $KUBECREDS == "prd" ]; then
             echo $KUBECONFIG_PRD | openssl base64 -d -A > ~/.kube/config
+            export RUNNER_TOKEN=$CCI_RUNNER_TOKEN_PRD
+            export RUNNER_RESOURCE_CLASS=$CCI_RUNNER_RESOURCE_CLASS_PRD
           else
             echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config
+            export RUNNER_TOKEN=$CCI_RUNNER_TOKEN_NP
+            export RUNNER_RESOURCE_CLASS=$CCI_RUNNER_RESOURCE_CLASS_NP
           fi
           chmod 600 ~/.kube/config
     - run:
         name: Helm Install/Upgrade
         command: |
-          helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$CCI_RUNNER_TOKEN --set resourceClass=$CCI_RUNNER_RESOURCECLASS --namespace circleci-runners $DRYRUN
+          helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$RUNNER_TOKEN --set resourceClass=$RUNNER_RESOURCE_CLASS --namespace circleci-runners $DRYRUN
 
 jobs:
-  helm-test:
+  dev-test:
     environment:
       KUBECREDS: "np"
       DRYRUN: "--dry-run"
@@ -33,6 +37,11 @@ jobs:
     environment:
       KUBECREDS: "np"
       DRYRUN: ""
+    <<: *helm_defaults
+  prod-test:
+    environment:
+      KUBECREDS: "prd"
+      DRYRUN: "--dry-run"
     <<: *helm_defaults
   prod-deploy:
     environment:
@@ -44,20 +53,28 @@ workflows:
   version: 2
   cci-runners:
     jobs:
-      - helm-test:
+      - dev-test:
           context: mediamath
       - dev-approval:
           type: approval
           requires:
-            - helm-test
+            - dev-test
       - dev-deploy:
           context: mediamath
           requires:
             - dev-approval
+      - prod-test:
+          context: mediamath
+          requires:
+            - dev-deploy
+          filters:
+            branches:
+              only:
+                - main
       - prod-approval:
           type: approval
           requires:
-            - helm-test
+            - prod-test
           filters:
             branches:
               only:
