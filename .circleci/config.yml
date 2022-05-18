@@ -12,7 +12,7 @@ helm_defaults: &helm_defaults
         name: Set KubeConfig
         command: |
           mkdir ~/.kube/
-          if [ $KUBECONFIG == "prd" ]; then
+          if [ $KUBECREDS == "prd" ]; then
             echo $KUBECONFIG_PRD | openssl base64 -d -A > ~/.kube/config
           else
             echo $KUBECONFIG_NP | openssl base64 -d -A > ~/.kube/config
@@ -26,17 +26,17 @@ helm_defaults: &helm_defaults
 jobs:
   helm-test:
     environment:
-      KUBECONFIG: "np"
+      KUBECREDS: "np"
       DRYRUN: "--dry-run"
     <<: *helm_defaults
   dev-deploy:
     environment:
-      KUBECONFIG: "np"
+      KUBECREDS: "np"
       DRYRUN: ""
     <<: *helm_defaults
   prod-deploy:
     environment:
-      KUBECONFIG: "prd"
+      KUBECREDS: "prd"
       DRYRUN: ""
     <<: *helm_defaults
 
