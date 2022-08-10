@@ -4,7 +4,7 @@ metadata:
   name: cci-runner-poc-svc
 spec:
   selector:
-    app: app:cci-runner-poc
+    app: cci-runner-poc
   ports:
   - protocol: TCP
     port: 54782
