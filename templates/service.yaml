@@ -4,7 +4,7 @@ metadata:
   name: cci-runner-poc-svc
 spec:
   selector:
-    app: cci-runner-poc
+    app.kubernetes.io/name: circleci-runner
   ports:
   - protocol: TCP
     port: 54782

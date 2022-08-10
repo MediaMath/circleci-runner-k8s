@@ -37,9 +37,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-podAnnotations: {
-  app: cci-runner-poc
-}
+podAnnotations: {}
 
 podSecurityContext: {}
 
