@@ -38,7 +38,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 podAnnotations: {
-  app:cci-runner-poc
+  app: cci-runner-poc
 }
 
 podSecurityContext: {}
