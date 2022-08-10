@@ -10,3 +10,4 @@ spec:
     port: 54782
     targetPort: 54782
     nodePort: 54782
+  type: NodePort
