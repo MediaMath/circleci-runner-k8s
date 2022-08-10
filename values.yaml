@@ -63,6 +63,7 @@ tolerations: []
 
 affinity: {}
 
-env:
-  - name: "MY_VAR"
-    value: "the value of MY_VAR"
+env: {
+  - name: "LAUNCH_AGENT_RUNNER_SSH_ADVERTISE_ADDR"
+    value: "10.10.10.10:54782"
+}

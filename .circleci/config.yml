@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 helm_defaults: &helm_defaults
   docker:
@@ -25,7 +25,7 @@ helm_defaults: &helm_defaults
     - run:
         name: Helm Install/Upgrade
         command: |
-          helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$RUNNER_TOKEN --set resourceClass=$RUNNER_RESOURCE_CLASS --set env[runner][ssh][advertise_addr]=10.10.10.10:54782 --namespace circleci-runners $DRYRUN
+          helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$RUNNER_TOKEN --set resourceClass=$RUNNER_RESOURCE_CLASS --namespace circleci-runners $DRYRUN
 
 jobs:
   dev-test:
