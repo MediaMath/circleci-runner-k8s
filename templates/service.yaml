@@ -6,6 +6,7 @@ spec:
   selector:
     app.kubernetes.io/name: circleci-runner
   ports:
-  - protocol: TCP
+  - name: cci-lb
     port: 54782
     targetPort: 54782
+    nodePort: 54782
