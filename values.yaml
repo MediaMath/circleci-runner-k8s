@@ -65,4 +65,4 @@ affinity: {}
 
 env:
   - name: "LAUNCH_AGENT_RUNNER_SSH_ADVERTISE_ADDR"
-    value: "10.233.17.252:54782"
+    value: "10.128.88.216:54782"
