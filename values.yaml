@@ -33,7 +33,9 @@ runnerToken: ""
 # The agent version to use for CircleCI Enterprise installations
 agentVersion: ""
 
-imagePullSecrets: []
+imagePullSecrets: [dockerPull]
+dockerPull: ""
+
 nameOverride: ""
 fullnameOverride: ""
 

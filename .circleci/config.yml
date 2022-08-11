@@ -29,7 +29,7 @@ helm_defaults: &helm_defaults
           helm upgrade --install -f values.yaml circleci-runners ./ \
             --set runnerToken=$RUNNER_TOKEN \
             --set resourceClass=$RUNNER_RESOURCE_CLASS \
-            --set dockerPull=$RUNNER_DOCKER_PULL \  
+            --set dockerPull=$RUNNER_DOCKER_PULL \
             --namespace circleci-runners \
             $DRYRUN
 
