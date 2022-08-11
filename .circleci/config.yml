@@ -21,11 +21,17 @@ helm_defaults: &helm_defaults
             echo "export RUNNER_TOKEN=$CCI_RUNNER_TOKEN_NP" >> $BASH_ENV
             echo "export RUNNER_RESOURCE_CLASS=$CCI_RUNNER_RESOURCE_CLASS_NP" >> $BASH_ENV
           fi
+          echo "export RUNNER_DOCKER_PULL=$CCI_RUNNER_DOCKER_PULL" >> $BASH_ENV
           chmod 600 ~/.kube/config
     - run:
         name: Helm Install/Upgrade
         command: |
-          helm upgrade --install -f values.yaml circleci-runners ./ --set runnerToken=$RUNNER_TOKEN --set resourceClass=$RUNNER_RESOURCE_CLASS --namespace circleci-runners $DRYRUN
+          helm upgrade --install -f values.yaml circleci-runners ./ \
+            --set runnerToken=$RUNNER_TOKEN \
+            --set resourceClass=$RUNNER_RESOURCE_CLASS \
+            --set dockerPull=$RUNNER_DOCKER_PULL \  
+            --namespace circleci-runners \
+            $DRYRUN
 
 jobs:
   dev-test:
