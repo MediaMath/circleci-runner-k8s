@@ -34,7 +34,7 @@ runnerToken: ""
 agentVersion: ""
 
 imagePullSecrets:
-  - name: dockerPull
+  - name: docker.mediamath.com
 
 dockerPull: ""
 
