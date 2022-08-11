@@ -51,12 +51,6 @@ spec:
             - name: {{ .name }}
               value: {{ .value }}
             {{- end }}
-          livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - ps -ef
             initialDelaySeconds: 3
             periodSeconds: 5
           resources:
