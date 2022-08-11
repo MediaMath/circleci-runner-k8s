@@ -56,7 +56,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - ps -ef | grep circleci-launch-agent
+                - ps -ef
             initialDelaySeconds: 3
             periodSeconds: 5
           resources:
