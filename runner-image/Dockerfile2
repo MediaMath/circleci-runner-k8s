@@ -1,0 +1,3 @@
+FROM circleci/runner:launch-agent
+FROM cimg/base:stable
+ENTRYPOINT ["/bin/bash"]
