@@ -26,7 +26,7 @@ helm_defaults: &helm_defaults
     - run:
         name: Helm Install/Upgrade
         command: |
-          helm upgrade --install -f values.yaml circleci-runners ./ \
+          helm upgrade --install --force -f values.yaml circleci-runners ./ \
             --set runnerToken=$RUNNER_TOKEN \
             --set resourceClass=$RUNNER_RESOURCE_CLASS \
             --set dockerPull=$RUNNER_DOCKER_PULL \
