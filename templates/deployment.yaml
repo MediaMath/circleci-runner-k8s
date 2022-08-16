@@ -64,8 +64,9 @@ spec:
         - name: dind
           image: docker:dind-rootless
           imagePullPolicy: Always
-          securityContext:
-            runAsUser: 1000
+          volumeMounts:
+            - name: dockersock
+              mountPath: "/var/run/docker.sock"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -78,3 +79,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
