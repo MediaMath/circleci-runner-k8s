@@ -67,7 +67,8 @@ spec:
           securityContext:
             capabilities:
               add:
-                - ALL
+                - SYS_ADMIN
+                - NET_ADMIN
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
