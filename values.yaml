@@ -34,7 +34,7 @@ runnerToken: ""
 agentVersion: ""
 
 imagePullSecrets:
-  - name: docker.mediamath.com
+  - name: mm-artifactory
 
 dockerPull: ""
 
