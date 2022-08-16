@@ -64,6 +64,8 @@ spec:
         - name: did
           image: docker:dind-rootless
           imagePullPolicy: Always
+          securityContext:
+            runAsUser: 1000
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
