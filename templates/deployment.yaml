@@ -63,7 +63,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: did
           image: docker:dind
-          imagePullPolicy: always
+          imagePullPolicy: Always
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
