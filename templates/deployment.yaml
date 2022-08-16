@@ -61,11 +61,12 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: did
+        - name: dind
           image: docker:dind-rootless
           imagePullPolicy: Always
           securityContext:
             runAsUser: 1000
+            privileged: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
