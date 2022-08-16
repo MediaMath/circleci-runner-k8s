@@ -61,7 +61,7 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: d-in-d
+        - name: dind
           image: docker:dind-rootless
           imagePullPolicy: Always
           securityContext:
