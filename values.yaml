@@ -43,7 +43,9 @@ fullnameOverride: ""
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext: {
+  privileged: true
+}
 
 securityContext: {
         runAsUser: 1500
