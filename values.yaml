@@ -18,8 +18,8 @@ configSecret:
   name: config-values
 
 serviceAccount:
-  create: true
-  name: circleci-runner
+  create: false
+  name: cicd
   annotations: {}
 #    eks.amazonaws.com/role-arn: "arn:aws:iam:..."
 
@@ -56,10 +56,10 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
     cpu: "100m"
-    memory: "64Mi"
+    memory: "128Mi"
   requests:
     cpu: "100m"
-    memory: "64Mi"
+    memory: "128Mi"
 
 nodeSelector: {}
 
