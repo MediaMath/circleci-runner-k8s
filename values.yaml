@@ -43,9 +43,7 @@ fullnameOverride: ""
 
 podAnnotations: {}
 
-podSecurityContext: {
-  privileged: true
-}
+podSecurityContext: {}
 
 securityContext: {
         runAsUser: 1500
@@ -58,10 +56,10 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
     cpu: "100m"
-    memory: "128Mi"
+    memory: "64Mi"
   requests:
     cpu: "100m"
-    memory: "128Mi"
+    memory: "64Mi"
 
 nodeSelector: {}
 
