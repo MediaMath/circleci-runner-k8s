@@ -65,10 +65,7 @@ spec:
           image: docker:dind-rootless
           imagePullPolicy: Always
           securityContext:
-            capabilities:
-              add:
-                - SYS_ADMIN
-                - NET_ADMIN
+            privileged: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
