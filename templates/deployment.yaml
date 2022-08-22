@@ -75,6 +75,8 @@ spec:
         - name: nginx
           image: nginx
           imagePullPolicy: Always
+          securityContext:
+            privileged: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
