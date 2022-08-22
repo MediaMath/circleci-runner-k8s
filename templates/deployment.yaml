@@ -44,7 +44,7 @@ spec:
                   key: runnerToken
                   name: {{ .Values.configSecret.name }}
             - name: DOCKER_HOST
-              value: tcp://localhost:2375
+              value: tcp://localhost:2376
             {{- if .Values.agentVersion }}
             - name: "agent_version"
               value: "{{ .Values.agentVersion }}"
