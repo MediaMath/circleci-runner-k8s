@@ -66,19 +66,10 @@ spec:
           imagePullPolicy: Always
           securityContext:
             privileged: true
-            allowPrivilegeEscalation: true
-            capabilities:
-              add:
-                - ALL
-                - NET_ADMIN
-                - SYS_ADMIN
+            securityContext:
+              runAsUser: 1000
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: nginx
-          image: nginx
-          imagePullPolicy: Always
-          securityContext:
-            privileged: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
