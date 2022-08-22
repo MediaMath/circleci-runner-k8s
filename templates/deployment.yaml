@@ -66,6 +66,7 @@ spec:
           imagePullPolicy: Always
           securityContext:
             privileged: true
+            allowPrivilegeEscalation: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
