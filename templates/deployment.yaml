@@ -62,11 +62,10 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: dind
-          image: docker:dind-rootless
+          image: docker:dind
           imagePullPolicy: Always
           securityContext:
             privileged: true
-            runAsUser: 1000
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
