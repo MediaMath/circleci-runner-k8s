@@ -67,6 +67,9 @@ spec:
           securityContext:
             privileged: true
             allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - ALL
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
