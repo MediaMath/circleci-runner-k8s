@@ -23,6 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       securityContext:
+        privileged: true
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       automountServiceAccountToken: false
