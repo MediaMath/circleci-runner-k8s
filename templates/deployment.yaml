@@ -72,6 +72,9 @@ spec:
                 - ALL
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        - name: nginx
+          image: nginx
+          imagePullPolicy: Always
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
