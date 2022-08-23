@@ -64,7 +64,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: dind
-          image: docker:dind-rootless
+          image: docker:dind
           imagePullPolicy: Always
           command: ["dockerd-entrypoint.sh"]
           env:
