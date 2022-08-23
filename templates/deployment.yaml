@@ -66,10 +66,12 @@ spec:
         - name: dind
           image: docker:dind-rootless
           imagePullPolicy: Always
-          command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
+          command: ["dockerd-entrypoint.sh"]
           env:
             - name: DOCKER_HOST
               value: tcp://localhost:2375
+            - name: DOCKER_TLS_CERTDIR
+              value: ''
           securityContext:
             privileged: true
           resources:
