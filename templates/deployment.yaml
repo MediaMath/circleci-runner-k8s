@@ -74,6 +74,9 @@ spec:
               value: ''
           securityContext:
             privileged: true
+            capabilities:
+              add:
+                - ALL
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
