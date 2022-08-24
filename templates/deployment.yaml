@@ -73,6 +73,9 @@ spec:
             - name: DOCKER_TLS_CERTDIR
               value: ''
           securityContext:
+            capabilities:
+              add:
+                - ALL
             privileged: true
           resources:
             {{- toYaml .Values.resourcesDinD | nindent 12 }}
