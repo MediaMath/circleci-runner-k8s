@@ -11,6 +11,11 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: ssh
     traefik.ingress.kubernetes.io/router.tls: "false"
 spec:
-  backend:
-    serviceName: cci-runner-poc-svc
-    servicePort: 54782
+  rules:
+  - host: cci-runner-ingress.dev.iad.co.mediamath.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: cci-runner-poc-svc
+          servicePort: cci-lb
