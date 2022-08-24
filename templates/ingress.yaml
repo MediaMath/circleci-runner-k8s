@@ -10,3 +10,7 @@ metadata:
     external-dns.alpha.kubernetes.io/ttl: "60"
     traefik.ingress.kubernetes.io/router.entrypoints: ssh
     traefik.ingress.kubernetes.io/router.tls: "false"
+spec:
+  backend:
+    serviceName: cci-runner-poc-svc
+    servicePort: 54782
