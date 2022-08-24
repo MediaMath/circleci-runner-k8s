@@ -6,6 +6,7 @@ metadata:
     app: cci-runners-ingress
   annotations:
     kubernetes.io/ingress.class: traefik
+    external-dns.alpha.kubernetes.io/target: cci-runner-ingress.dev.iad.co.mediamath.com
     external-dns.alpha.kubernetes.io/ttl: "60"
     traefik.ingress.kubernetes.io/router.entrypoints: ssh
     traefik.ingress.kubernetes.io/router.tls: "false"
