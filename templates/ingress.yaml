@@ -17,5 +17,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: cci-runner-poc-svc
-          servicePort: cci-lb
+          service:
+            name: cci-runner-poc-svc
+            port:
+              number: 54782
